@@ -9,12 +9,17 @@ import PropTypes from 'prop-types';
  */
 
 const Todo = ({ title }) => (
-  <View>
+  <View style={styles.container}>
     <Text>{title}</Text>
   </View>
 );
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f0f554',
+  },
+});
 
 Todo.defaultProps = {
   title: 'Todo Padrão',
