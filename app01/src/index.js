@@ -31,12 +31,12 @@ export default class App extends Component {
   };
 
   render() {
+    const { todos } = this.state;
     return (
       <View style={styles.container}>
-        <Todo title="Novo Todo - 1" />
-        <Todo title="Novo Todo - 2" />
-        <Todo title="Novo Todo - 3" />
-        <Todo title="Novo Todo - 4" />
+        {todos.map(todo => (
+          <Todo title={todo.title} key={todo.id} />
+        ))}
       </View>
     );
   }

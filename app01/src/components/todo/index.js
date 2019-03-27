@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, Platform,
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 /** *
@@ -8,18 +10,26 @@ import PropTypes from 'prop-types';
  *
  */
 
-const Todo = ({ title }) => (
-  <View style={styles.container}>
-    <Text>{title}</Text>
-  </View>
-);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f554',
+    ...Platform.select({
+      ios: {
+        backgroundColor: '#faa91aFF',
+      },
+      android: {
+        backgroundColor: '#10a3b1FF',
+      },
+    }),
   },
 });
+
+const Todo = ({ title }) => (
+  <View style={styles.container}>
+    <Text>{title}</Text>
+    {Platform.OS === 'ios' ? <Text>Ios</Text> : <Text>Android</Text>}
+  </View>
+);
 
 Todo.defaultProps = {
   title: 'Todo Padrão',
