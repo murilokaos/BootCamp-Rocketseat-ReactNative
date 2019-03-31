@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 
 import '~/config/ReactotronConfig';
 import '~/config/ReactDevToolsConfig';
