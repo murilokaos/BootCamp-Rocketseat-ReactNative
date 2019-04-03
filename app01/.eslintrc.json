@@ -21,9 +21,13 @@
       "error",
       { "extensions": [".js", ".jsx"] }
     ],
-    "import/preferer-export": "off"
+    "import/preferer-default-export": "off"
   },
   "settings": {
-    "import/resolver": { "babel-plugin-root-import": {} }
+    "import/resolver": {
+      "babel-plugin-root-import": {
+        "rootPathSuffix": "src"
+      }
+    }
   }
 }
