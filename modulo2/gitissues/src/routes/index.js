@@ -4,7 +4,6 @@ import Repositories from '~/pages/Repositories';
 import Issues from '~/pages/Issues';
 
 import { colors } from '~/styles';
-// import styles from './styles';
 
 const Routes = () => createAppContainer(
   createStackNavigator(
@@ -14,12 +13,12 @@ const Routes = () => createAppContainer(
     },
     {
       initialRouteName: 'Repositories',
+      headerLayoutPreset: 'center',
       defaultNavigationOptions: {
         headerStyle: {
           backgroundColor: colors.primary,
         },
         headerTintColor: colors.white,
-        headerTitleStyle: { textAlign: 'center', alignSelf: 'center', flexGrow: 1 },
       },
     },
   ),

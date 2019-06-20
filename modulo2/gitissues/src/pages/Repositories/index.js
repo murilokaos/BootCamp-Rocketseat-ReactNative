@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   AsyncStorage,
   FlatList,
-  Image,
   Keyboard,
   StatusBar,
   Text,
@@ -14,6 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '~/services/api';
 
+import Card from '~/components/CardRepo';
 import styles from './styles';
 
 class Repositories extends Component {
@@ -25,7 +25,7 @@ class Repositories extends Component {
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
     }).isRequired,
-  }
+  };
 
   state = {
     repositoryInput: '',
@@ -40,12 +40,18 @@ class Repositories extends Component {
 
   renderRepositories = async () => {
     try {
-      await AsyncStorage.getItem('@GitIssues:repos').then(db => !!db && this.setState({
-        repos: JSON.parse(db),
-      }, () => {
-        const { repos } = this.state;
-        repos.map(item => this.setRepository(item.fullName));
-      }));
+      await AsyncStorage.getItem('@GitIssues:repos').then(
+        db => !!db
+          && this.setState(
+            {
+              repos: JSON.parse(db),
+            },
+            () => {
+              const { repos } = this.state;
+              repos.map(item => this.getOrSetRepository(item.fullName));
+            },
+          ),
+      );
     } catch (error) {
       this.setState({
         error: `Não foi possível recuperar os repositórios da memória.
@@ -54,7 +60,7 @@ class Repositories extends Component {
     }
   };
 
-  setRepository = async (name = null) => {
+  getOrSetRepository = async (name = null) => {
     const { repos, repositoryInput } = this.state;
     this.setState({ refreshing: true });
     try {
@@ -77,8 +83,8 @@ class Repositories extends Component {
           error: '',
         },
         async () => {
-          const { repos: reposGoToAsync } = this.state;
-          await AsyncStorage.setItem('@GitIssues:repos', JSON.stringify(reposGoToAsync));
+          const { repos: reposToStorage } = this.state;
+          await AsyncStorage.setItem('@GitIssues:repos', JSON.stringify(reposToStorage));
         },
       );
       Keyboard.dismiss();
@@ -88,31 +94,13 @@ class Repositories extends Component {
         refreshing: false,
         repositoryInput: '',
       });
+      Keyboard.dismiss();
     }
-  };
-
-  renderItem = (item) => {
-    const { navigation } = this.props;
-    return (
-      <TouchableHighlight onPress={() => navigation.navigate('Issues')}>
-        <View style={styles.itemRepo}>
-          <Image source={{ uri: item.ownerAvatar }} style={styles.imgRepo} />
-          <View style={styles.textContainer}>
-            <Text style={styles.titleRepo}>{item.name}</Text>
-            <Text style={styles.ownerRepo}>{item.ownerName}</Text>
-          </View>
-          <Icon size={14} name="chevron-right" style={styles.iconRepo} />
-        </View>
-      </TouchableHighlight>
-    );
   };
 
   render() {
     const {
-      repos,
-      repositoryInput,
-      refreshing,
-      error,
+      repos, repositoryInput, refreshing, error,
     } = this.state;
     return (
       <View style={styles.container}>
@@ -126,10 +114,10 @@ class Repositories extends Component {
             autoCapitalize="none"
             autoCorrect={false}
             value={repositoryInput}
-            onSubmitEditing={() => this.setRepository()}
+            onSubmitEditing={() => this.getOrSetRepository()}
             returnKeyType="search"
           />
-          <TouchableHighlight onPress={() => this.setRepository()}>
+          <TouchableHighlight onPress={() => this.getOrSetRepository()}>
             <Icon style={styles.icon} size={22} name="plus" />
           </TouchableHighlight>
         </View>
@@ -137,7 +125,7 @@ class Repositories extends Component {
           {!!error && <Text style={styles.notFound}>{error}</Text>}
           <FlatList
             data={repos}
-            renderItem={({ item }) => this.renderItem(item)}
+            renderItem={({ item }) => <Card item={item} {...this.props} />}
             refreshing={refreshing}
             onRefresh={this.renderRepositories}
             keyExtractor={item => item.id.toString()}
