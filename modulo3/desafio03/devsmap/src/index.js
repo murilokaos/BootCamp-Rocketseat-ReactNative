@@ -1,16 +1,13 @@
+import '~/config/configReactotron';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
-const styles = StyleSheet.create({
-  body: {
-    backgroundColor: 'white',
-  },
-});
+import { Provider } from 'react-redux';
+import Maps from './pages/Map';
+import store from '~/store';
 
 const App = () => (
-  <View style={styles.body}>
-    <Text>Hello World, i&apos;m React Native</Text>
-  </View>
+  <Provider store={store}>
+    <Maps />
+  </Provider>
 );
 
 export default App;
