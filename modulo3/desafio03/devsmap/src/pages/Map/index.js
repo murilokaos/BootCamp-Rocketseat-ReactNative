@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { StyleSheet } from 'react-native';
@@ -54,6 +55,21 @@ const Maps = ({ userList, isVisible, ...props }) => {
       </MapView>
     </Container>
   );
+};
+
+Maps.propTypes = {
+  userList: PropTypes.arrayOf({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    image: PropTypes.string,
+    description: PropTypes.string,
+    cordinate: PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+    }),
+  }).isRequired,
+  isVisible: PropTypes.bool.isRequired,
+  showModal: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators(modalActions, dispatch);

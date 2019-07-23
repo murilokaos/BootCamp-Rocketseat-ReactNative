@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -60,6 +61,13 @@ const ModalScreen = ({
       </BoxContainer>
     </UserModal>
   );
+};
+
+ModalScreen.propTypes = {
+  hideModal: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  loadUserRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ users }) => ({

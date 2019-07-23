@@ -15,7 +15,7 @@ export const Creators = {
     type: Types.LOAD_USER_SUCCESS,
     payload: { data },
   }),
-  loadUserFailure: () => ({ type: Types.LOAD_USER_REQUEST }),
+  loadUserFailure: () => ({ type: Types.LOAD_USER_FAILURE }),
 };
 // Reducer
 
